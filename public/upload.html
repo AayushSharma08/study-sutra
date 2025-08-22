@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Notes | Study Sutra</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>Upload Your Notes</h1>
+    </header>
+
+    <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
+      <input type="file" name="file" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <h2>Uploaded Files</h2>
+    <ul id="fileList"></ul>
+  </div>
+
+  <script>
+    async function loadFiles() {
+      const res = await fetch("/files");
+      const files = await res.json();
+      const list = document.getElementById("fileList");
+      list.innerHTML = "";
+      files.forEach(file => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="/uploads/${file}" target="_blank">${file}</a>`;
+        list.appendChild(li);
+      });
+    }
+    loadFiles();
+  </script>
+</body>
+</html>
